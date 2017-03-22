@@ -1,7 +1,10 @@
 from MongodbConn import MongoPipeline
 conn = MongoPipeline()
 conn.open_connection('qiandao_mac_name')
-
+#插入信息
+#格式：
+#MAC 姓名
+#以字符c结束
 header = input("")
 k = ''
 while header !='c':
