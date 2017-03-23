@@ -6,10 +6,11 @@ from MongodbConn import MongoPipeline
 import time
 import my_cmdcode
 while True:
+
     s = requests.session()
     #登陆路由器后台要post出去的数据
     data = {
-        'login':{'password':"WlD8wX02ceefbwK"}
+        'login':{'password':"WML6r89ALlefbwK"}
     ,
     'method':"do"
     }
