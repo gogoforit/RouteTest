@@ -6,6 +6,7 @@ from MongodbConn import MongoPipeline
 import time
 import my_cmdcode
 import datetime
+import date_manage
 while True:
 
     s = requests.session()
@@ -130,6 +131,7 @@ while True:
         _id = next(ids, None)
 
         my_cmdcode.output() #导出csv格式文件
+        date_manage.solve()
 #
 # print(hostinfo)
 # print(nexturl)
