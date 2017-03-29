@@ -105,10 +105,11 @@ while True:
     _id = next(ids, None)
     while _id:
         print(_id)
-        dic = {}
+        dic_lastinfo = {}
         mac = _id['mac']
-        dic['mac'] = _id['mac']
-        dic['time'] = _id['time']
+        dic_lastinfo['mac'] = _id['mac']
+        dic_lastinfo['time'] = _id['time']
+        dic_lastinfo['class_num'] = dic['class_num']
         conn2 = MongoPipeline()
         conn2.open_connection('qiandao_mac_name') #conn2储存的mac地址和对应的名字
         searchInfo = conn2.getIds('info',{'mac': mac})
@@ -118,9 +119,13 @@ while True:
         conn3 = MongoPipeline()#conn3对应最后的结果，结果导出到csv文件
         conn3.open_connection('qiandao_last_info')
         if theInfo!=None:
-            dic['name'] = theInfo['name']
-            dic['_id'] = theInfo['name']
-            dic['studentid'] = theInfo['studentid']
+            dic_lastinfo['name'] = theInfo['name']
+            dic_lastinfo['_id'] = theInfo['name']
+
+            try:
+                 dic_lastinfo['studentid'] = theInfo['studentid']
+            except :
+                pass
             conn3.process_item(dic, 'info')
         _id = next(ids, None)
 
