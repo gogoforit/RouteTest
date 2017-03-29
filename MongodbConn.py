@@ -30,7 +30,7 @@ class MongoPipeline:
     def update_item(self,query, item, collection_name):
             try:
                 self.db[collection_name].update(query,item,False,True)
-                print('更新完成')
+                # print('更新完成')
                 return item
             except Exception as e:
                 pass

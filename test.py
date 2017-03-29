@@ -126,7 +126,7 @@ while True:
                  dic_lastinfo['studentid'] = theInfo['studentid']
             except :
                 pass
-            conn3.process_item(dic, 'info')
+            conn3.process_item(dic_lastinfo, 'info')
         _id = next(ids, None)
 
         my_cmdcode.output() #导出csv格式文件
