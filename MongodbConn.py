@@ -14,7 +14,7 @@ class MongoPipeline:
     def open_connection(self, mongo_db):
         self.client = pymongo.MongoClient(self.host, self.port)
         self.db = self.client[mongo_db]
-        print ("connected")
+        # print ("connected")
 
     def close_connection(self):
         self.client.close()

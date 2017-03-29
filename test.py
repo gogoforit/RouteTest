@@ -5,6 +5,7 @@ import re
 from MongodbConn import MongoPipeline
 import time
 import my_cmdcode
+import datetime
 while True:
 
     s = requests.session()
@@ -58,6 +59,39 @@ while True:
         mytime  = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
         print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
         dic['time'] = mytime
+        #对时间做处理，判断
+        classtime = mytime.split(' ')
+        classtime_hms = classtime[1]
+        classtime_hms = classtime_hms.split(':')
+        classtime_hour = classtime_hms[0]
+        classtime_min = classtime_hms[1]
+        classtime_sec = classtime_hms[2]
+        nowtime = datetime.time(int(classtime_hour),int(classtime_min),int(classtime_sec))
+        class_time_start_1 = datetime.time(8,0,0)
+        class_time_end_1 = datetime.time(10,5,0)
+        class_time_start_2 = datetime.time(10,20,0)
+        class_time_end_2 = datetime.time(12,0,0)
+        class_time_start_3 = datetime.time(14,0,0)
+        class_time_end_3 = datetime.time(15,30,0)
+        class_time_start_4 = datetime.time(15,50,0)
+        class_time_end_4 = datetime.time(17,30,0)
+        class_time_test = datetime.time(18,0,0)
+        class_num = None
+        if nowtime > class_time_start_1 and nowtime < class_time_end_1:
+            class_num = 1
+            dic['class_num'] = class_num
+        if nowtime > class_time_start_2 and nowtime < class_time_end_2:
+            class_num = 2
+            dic['class_num'] = class_num
+        if nowtime > class_time_start_3 and nowtime < class_time_end_3:
+            class_num = 3
+            dic['class_num'] = class_num
+        if nowtime > class_time_start_4 and nowtime < class_time_end_4:
+            class_num = 4
+            dic['class_num'] = class_num
+        if nowtime > class_time_test:
+            class_num = 5
+            dic['class_num'] = class_num
         if id!=None:
             conn.update_item({'_id': each}, {"$set": {"num": id['num']+1}}, 'info')
         else:
@@ -79,8 +113,8 @@ while True:
         conn2.open_connection('qiandao_mac_name') #conn2储存的mac地址和对应的名字
         searchInfo = conn2.getIds('info',{'mac': mac})
         theInfo = next(searchInfo,None)
-        print(theInfo)
-        print(123)
+        # print(theInfo)
+        # print(123)
         conn3 = MongoPipeline()#conn3对应最后的结果，结果导出到csv文件
         conn3.open_connection('qiandao_last_info')
         if theInfo!=None:
@@ -90,7 +124,7 @@ while True:
             conn3.process_item(dic, 'info')
         _id = next(ids, None)
 
-    my_cmdcode.output() #导出csv格式文件
+        my_cmdcode.output() #导出csv格式文件
 #
 # print(hostinfo)
 # print(nexturl)
