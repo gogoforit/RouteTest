@@ -29,7 +29,7 @@ def solve():
                 class_other.append(i)
     for i  in range (0,5):
         thefile = "class_" + str(i+1) + '.csv'
-        print (class_all[i])
+
         with open(thefile, "w", newline="") as datacsv:
             # dialect为打开csv文件的方式，默认是excel，delimiter="\t"参数指写入的时候的分隔符
 
