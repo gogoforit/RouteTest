@@ -22,6 +22,7 @@ def insert():
         dic = {}
         row_data = sh.row_values(i)
         dic['mac'] = row_data[2]
+        dic['studentid'] = row_data[1]
         dic['name'] = row_data[0]
         print(row_data[2],row_data[0])
         row_list.append(dic)

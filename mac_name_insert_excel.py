@@ -9,11 +9,14 @@ info_list = excel_insert.insert()
 # print(info_list)
 for each in info_list:
     print(each)
+    mac = each['mac'].replace(':','-').lower()
     dic = {}
     if each['mac']:
-        dic['mac'] = each['mac']
+        dic['mac'] = mac
     if each['name']:
         dic['name'] = each['name']
-    dic['_id'] = each['name']
+    if each['studentid']:
+        dic['studentid'] = each['studentid']
+    dic['_id'] = mac
     conn.process_item(dic, 'info')
     print(dic)

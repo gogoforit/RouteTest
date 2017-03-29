@@ -10,7 +10,7 @@ while True:
     s = requests.session()
     #登陆路由器后台要post出去的数据
     data = {
-        'login':{'password':"WML6r89ALlefbwK"}
+        'login':{'password':"WlD8wX02ceefbwK"}
     ,
     'method':"do"
     }
@@ -86,10 +86,11 @@ while True:
         if theInfo!=None:
             dic['name'] = theInfo['name']
             dic['_id'] = theInfo['name']
+            dic['studentid'] = theInfo['studentid']
             conn3.process_item(dic, 'info')
         _id = next(ids, None)
 
-my_cmdcode.output() #导出csv格式文件
+    my_cmdcode.output() #导出csv格式文件
 #
 # print(hostinfo)
 # print(nexturl)
