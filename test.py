@@ -50,7 +50,7 @@ while True:
     conn = MongoPipeline()
     conn.open_connection('qiandao')
     for each in macs: #把所有现在在线MAC地址都存入数据库中
-        print(each)
+        # print(each)
         dic = {}
         dic['mac'] = each
         dic['_id'] = each
@@ -58,7 +58,7 @@ while True:
         ids = conn.getIds('info', {'_id': each})
         id = next(ids,None)
         mytime  = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-        print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+        # print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
         dic['time'] = mytime
         #对时间做处理，判断
         classtime = mytime.split(' ')
@@ -78,6 +78,7 @@ while True:
         class_time_end_4 = datetime.time(17,30,0)
         class_time_test = datetime.time(18,0,0)
         class_num = None
+        dic['class_num'] = 66
         if nowtime > class_time_start_1 and nowtime < class_time_end_1:
             class_num = 1
             dic['class_num'] = class_num
@@ -105,7 +106,7 @@ while True:
     ids = conn.getIds('info', {'_type': 'mac'})
     _id = next(ids, None)
     while _id:
-        print(_id)
+        # print(_id)
         dic_lastinfo = {}
         mac = _id['mac']
         dic_lastinfo['mac'] = _id['mac']

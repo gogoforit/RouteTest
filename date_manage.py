@@ -37,7 +37,7 @@ def solve():
 
             # csv文件插入一行数据，把下面列表中的每一项放入一个单元格（可以用循环插入多行）
 
-            csvwriter.writerow(["A", "B", "C", "D"])
+            csvwriter.writerow(["time", "mac", "class_num", "name"])
             for each in class_all[i]:
                 csvwriter.writerow(each)
 
