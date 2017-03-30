@@ -82,16 +82,16 @@ while True:
         if nowtime > class_time_start_1 and nowtime < class_time_end_1:
             class_num = 1
             dic['class_num'] = class_num
-        if nowtime > class_time_start_2 and nowtime < class_time_end_2:
+        elif nowtime > class_time_start_2 and nowtime < class_time_end_2:
             class_num = 2
             dic['class_num'] = class_num
-        if nowtime > class_time_start_3 and nowtime < class_time_end_3:
+        elif nowtime > class_time_start_3 and nowtime < class_time_end_3:
             class_num = 3
             dic['class_num'] = class_num
-        if nowtime > class_time_start_4 and nowtime < class_time_end_4:
+        elif nowtime > class_time_start_4 and nowtime < class_time_end_4:
             class_num = 4
             dic['class_num'] = class_num
-        if nowtime > class_time_test:
+        else :
             class_num = 5
             dic['class_num'] = class_num
         if id!=None:
@@ -122,7 +122,7 @@ while True:
         conn3.open_connection('qiandao_last_info')
         if theInfo!=None:
             dic_lastinfo['name'] = theInfo['name']
-            dic_lastinfo['_id'] = theInfo['name']
+            dic_lastinfo['_id'] = str(dic['class_num'])+theInfo['name']
 
             try:
                  dic_lastinfo['studentid'] = theInfo['studentid']
