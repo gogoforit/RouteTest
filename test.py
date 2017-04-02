@@ -44,6 +44,7 @@ while True:
     hostinfo = s.post(nexturl,data=json.dumps(datahost)).json()
     info = json.dumps(hostinfo)
     #正则匹配出所有的MAC地址
+    macs = None
     macs = re.findall('"mac": "(.*?)"',info,re.S)
 
     #存入数据库
@@ -54,9 +55,7 @@ while True:
         dic = {}
         dic['mac'] = each
         dic['_id'] = each
-        dic['_type'] = 'mac'
-        ids = conn.getIds('info', {'_id': each})
-        id = next(ids,None)
+        dic['_type'] ='mac'
         mytime  = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
         # print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
         dic['time'] = mytime
@@ -94,8 +93,12 @@ while True:
         else :
             class_num = 5
             dic['class_num'] = class_num
+        ids = conn.getIds('info', {'_id': str(class_num) + ':' +each})
+        id = next(ids, None)
+        dic['_id'] = str(class_num) + ':' + dic['_id']
         if id!=None:
             conn.update_item({'_id': each}, {"$set": {"num": id['num']+1}}, 'info')
+            continue
         else:
             dic['num'] = 1
             conn.process_item(dic, 'info')
@@ -103,7 +106,8 @@ while True:
     #统计哪些人到了，用mac地址和已经存好的姓名对应起来
     conn = MongoPipeline()
     conn.open_connection('qiandao')
-    ids = conn.getIds('info', {'_type': 'mac'})
+    #用课程来区别，不仅仅是mac地址，因为每次课的mac地址是
+    ids = conn.getIds('info', {'class_num': class_num})
     _id = next(ids, None)
     while _id:
         # print(_id)
