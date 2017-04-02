@@ -17,13 +17,13 @@ def solve():
         read = csv.reader(csvfile)
         for i in read:
             # print (i)
-            if i[2] == 1:
+            if i[2] == '1':
                 class_1.append(i)
-            elif i[2] == 2:
+            elif i[2] == '2':
                 class_2.append(i)
-            elif i[2] == 3:
+            elif i[2] == '3':
                 class_3.append(i)
-            elif i[2] == 4:
+            elif i[2] == '4':
                 class_4.append(i)
             else:
                 class_other.append(i)

@@ -131,8 +131,8 @@ while True:
             conn3.process_item(dic_lastinfo, 'info')
         _id = next(ids, None)
 
-        my_cmdcode.output() #导出csv格式文件
-        date_manage.solve()
+    my_cmdcode.output() #导出csv格式文件
+    date_manage.solve()
 #
 # print(hostinfo)
 # print(nexturl)
