@@ -104,6 +104,7 @@ while True:
             conn.process_item(dic, 'info')
 
     #统计哪些人到了，用mac地址和已经存好的姓名对应起来
+    k = 45
     conn = MongoPipeline()
     conn.open_connection('qiandao')
     #用课程来区别，不仅仅是mac地址，因为每次课的mac地址是
