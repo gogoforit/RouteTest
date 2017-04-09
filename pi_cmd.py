@@ -6,3 +6,4 @@ k = k.split(' ')
 for each2 in k:
 	if ':' in each2:
 		print(each2)
+
