@@ -58,6 +58,8 @@ while True:
         dic['_type'] ='mac'
         mytime  = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
         # print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+        #处理出当天的日期
+        the_day = mytime.split(' ')[0]
         dic['time'] = mytime
         #对时间做处理，判断
         classtime = mytime.split(' ')
@@ -95,7 +97,7 @@ while True:
             dic['class_num'] = class_num
         ids = conn.getIds('info', {'_id': str(class_num) + ':' +each})
         id = next(ids, None)
-        dic['_id'] = str(class_num) + ':' + dic['_id']
+        dic['_id'] = str(the_day) + '/' + str(class_num) + '/' + dic['_id']
         if id!=None:
             conn.update_item({'_id': each}, {"$set": {"num": id['num']+1}}, 'info')
             continue
@@ -104,7 +106,6 @@ while True:
             conn.process_item(dic, 'info')
 
     #统计哪些人到了，用mac地址和已经存好的姓名对应起来
-    k = 45
     conn = MongoPipeline()
     conn.open_connection('qiandao')
     #用课程来区别，不仅仅是mac地址，因为每次课的mac地址是
@@ -127,7 +128,7 @@ while True:
         conn3.open_connection('qiandao_last_info')
         if theInfo!=None:
             dic_lastinfo['name'] = theInfo['name']
-            dic_lastinfo['_id'] = str(dic['class_num'])+theInfo['name']
+            dic_lastinfo['_id'] = str(the_day) + '/' + str(dic['class_num']) + '/' + theInfo['name']
 
             try:
                  dic_lastinfo['studentid'] = theInfo['studentid']
