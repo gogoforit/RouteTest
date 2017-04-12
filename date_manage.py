@@ -57,6 +57,13 @@ def solve():
 
             csvwriter.writerow(["time", "mac", "class_num", "name","studentid"])
             for each in class_all[i]:
-                csvwriter.writerow(each)
+                every_stu = []
+                every_stu.append(each[1])
+                every_stu.append(each[2])
+                every_stu.append(each[3])
+                every_stu.append(each[4])
+                every_stu.append(each[5])
+                print(every_stu)
+                csvwriter.writerow(every_stu)
     os.chdir(root_cwd)
 
