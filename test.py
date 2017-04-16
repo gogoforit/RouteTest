@@ -71,7 +71,7 @@ while True:
         classtime_sec = classtime_hms[2]
         nowtime = datetime.time(int(classtime_hour),int(classtime_min),int(classtime_sec))
         class_time_start_1 = datetime.time(8,0,0)
-        class_time_end_1 = datetime.time(8,30,0)
+        class_time_end_1 = datetime.time(9,0,0)
         class_time_start_2 = datetime.time(10,0,0)
         class_time_end_2 = datetime.time(11,0,0)
         class_time_start_3 = datetime.time(13,30,0)
