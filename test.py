@@ -7,45 +7,48 @@ import time
 import my_cmdcode
 import datetime
 import date_manage
+import get_mac
+import get_wlan0_pid
 while True:
 
-    s = requests.session()
-    #登陆路由器后台要post出去的数据
-    data = {
-        'login':{'password':"WlD8wX02ceefbwK"}
-    ,
-    'method':"do"
-    }
-    #头标签
-    header = {
-    "Host":"192.168.1.1",
-    "User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64; rv,:52.0) Gecko/20100101 Firefox/52.0",
-    "Accept":"application/json, text/javascript, */*; q=0.01",
-    "Accept-Language":"zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3",
-    "Accept-Encoding":"gzip, deflate",
-    "Content-Type":"application/json; charset=UTF-8",
-    "X-Requested-With":"XMLHttpRequest",
-    "Referer":"http://192.168.1.1/",
-    "Content-Length":"54",
-    "Connection":"keep-alive",
-    }
-    #post数据，登陆路由器后台控制界面
-    html = s.post('http://192.168.1.1/',data=json.dumps(data),headers = header).json()
-
-    #post获取在线的设备MAC地址等信息的包
-    datahost = {
-    'hosts_info':{'table':"online_host"},
-    'method':"get"
-    }
-    stok = html['stok']
-    nexturl = 'http://192.168.1.1/stok=' + stok + '/ds'
-    # nexturl = 'http://192.168.1.1/stok=7%5BuVF%7CF%24v6W3HvDXpeiKr%2Bc%2BsoSrHPA%3E/ds'
-    #获取在线设备等的MAC地址
-    hostinfo = s.post(nexturl,data=json.dumps(datahost)).json()
-    info = json.dumps(hostinfo)
+    # s = requests.session()
+    # #登陆路由器后台要post出去的数据
+    # data = {
+    #     'login':{'password':"WlD8wX02ceefbwK"}
+    # ,
+    # 'method':"do"
+    # }
+    # #头标签
+    # header = {
+    # "Host":"192.168.1.1",
+    # "User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64; rv,:52.0) Gecko/20100101 Firefox/52.0",
+    # "Accept":"application/json, text/javascript, */*; q=0.01",
+    # "Accept-Language":"zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3",
+    # "Accept-Encoding":"gzip, deflate",
+    # "Content-Type":"application/json; charset=UTF-8",
+    # "X-Requested-With":"XMLHttpRequest",
+    # "Referer":"http://192.168.1.1/",
+    # "Content-Length":"54",
+    # "Connection":"keep-alive",
+    # }
+    # #post数据，登陆路由器后台控制界面
+    # html = s.post('http://192.168.1.1/',data=json.dumps(data),headers = header).json()
+    #
+    # #post获取在线的设备MAC地址等信息的包
+    # datahost = {
+    # 'hosts_info':{'table':"online_host"},
+    # 'method':"get"
+    # }
+    # stok = html['stok']
+    # nexturl = 'http://192.168.1.1/stok=' + stok + '/ds'
+    # # nexturl = 'http://192.168.1.1/stok=7%5BuVF%7CF%24v6W3HvDXpeiKr%2Bc%2BsoSrHPA%3E/ds'
+    # #获取在线设备等的MAC地址
+    # hostinfo = s.post(nexturl,data=json.dumps(datahost)).json()
+    # info = json.dumps(hostinfo)
     #正则匹配出所有的MAC地址
     macs = None
-    macs = re.findall('"mac": "(.*?)"',info,re.S)
+    macs = get_mac.get()
+    # macs = re.findall('"mac": "(.*?)"',info,re.S)
 
     #存入数据库
     conn = MongoPipeline()
