@@ -14,6 +14,7 @@ def get():
         theinfo = each.split(' ')
         for each2 in theinfo:
           if ':' in each2:
+           each2 = each2.replace(':','-')
            mac = each2
            macs.append(mac)
        # if ':' in each:
