@@ -108,7 +108,7 @@ while True:
         else:
             dic['num'] = 1
             conn.process_item(dic, 'info')
-    print(dic)
+    #print(dic)
     #统计哪些人到了，用mac地址和已经存好的姓名对应起来
     conn = MongoPipeline()
     conn.open_connection('qiandao')
