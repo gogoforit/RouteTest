@@ -6,6 +6,6 @@ def get_pid():
     k = k.split('\n')
     k = k[2].split(' ')
     pid = k[0]
-    print(pid)
+   # print(pid)
     return pid
 
