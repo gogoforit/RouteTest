@@ -1,6 +1,7 @@
 led / optimized / DLL files
 __pycache__/
 .idea/
+插入工具/
 *.py[cod]
 *$py.class
 
@@ -101,5 +102,5 @@ ENV/
 #date documentation
 2017-*
 
-#insert function
-插入工具/
+
+
