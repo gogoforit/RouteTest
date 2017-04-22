@@ -49,7 +49,8 @@ while True:
     macs = None
     macs = GetMac.get()
     # macs = re.findall('"mac": "(.*?)"',info,re.S)
-
+    if len(macs)==0:
+        continue
     #存入数据库
     conn = MongoPipeline()
     conn.open_connection('qiandao')
