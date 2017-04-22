@@ -100,3 +100,8 @@ ENV/
 
 #date documentation
 2017-*
+
+#insert function
+excel_insert.py
+mac_name_insert.py
+mac_name_insert_excel.py
