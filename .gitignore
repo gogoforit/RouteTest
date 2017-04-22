@@ -102,6 +102,4 @@ ENV/
 2017-*
 
 #insert function
-excel_insert.py
-mac_name_insert.py
-mac_name_insert_excel.py
+插入工具/
