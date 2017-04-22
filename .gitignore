@@ -97,3 +97,6 @@ ENV/
 
 # mkdocs documentation
 /site
+
+#date documentation
+2017-*
