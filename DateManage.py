@@ -79,9 +79,18 @@ def solve():
                 every_stu.append(each[3])
                 every_stu.append(each[4])
                 every_stu.append(each[5])
-                print(each[4])
+                # print(each[4])
+                student_list[each[4]] = 1
 
                # print(every_stu)
                 csvwriter.writerow(every_stu)
+    #处理出没有来签到的同学的名单
+    student_unsigh = []
+    for each in student_list:
+        if student_list[each] == 0:
+            student_unsigh.append(each)
+
+    print(student_unsigh)
+
     os.chdir(root_cwd)
 
