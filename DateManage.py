@@ -18,7 +18,10 @@ def solve():
     # 用课程来区别，不仅仅是mac地址，因为每次课的mac地址是
     ids = conn.getIds('info', {'class_num': class_number})
     _id = next(ids, None)
+    student_num = 0
     while _id:
+        #统计每个班总的人数
+        student_num += 1
         # print(_id)
         student_name = _id['name']
         print(student_name)
@@ -85,12 +88,17 @@ def solve():
                # print(every_stu)
                 csvwriter.writerow(every_stu)
     #处理出没有来签到的同学的名单
-    student_unsigh = []
-    for each in student_list:
-        if student_list[each] == 0:
-            student_unsigh.append(each)
+        student_unsigh = []
+        for each in student_list:
+            if student_list[each] == 0:
+                student_unsigh.append(each)
 
-    print(student_unsigh)
-
+        if len(student_unsigh) != 0 and len(student_unsigh) != student_num:
+            print(student_unsigh)
+            student_unsigh_filename =  "class_" + str(i+1) + '_unsign' +'.csv'
+            with open(student_unsigh_filename, "w", newline="") as datacsv:
+                csvwriter = csv.writer(datacsv, dialect=("excel"))
+                for each in student_unsigh:
+                    csvwriter.writerow(each)
     os.chdir(root_cwd)
 
