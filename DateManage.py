@@ -12,7 +12,7 @@ def solve():
     cwd = root_cwd + '/' + str(todaytime)
     os.chdir(cwd)
 
-    student_list = []
+    student_list = {}
     conn = MongoPipeline()
     conn.open_connection('qiandao_mac_name')
     # 用课程来区别，不仅仅是mac地址，因为每次课的mac地址是
@@ -22,7 +22,7 @@ def solve():
         # print(_id)
         student_name = _id['name']
         print(student_name)
-        student_list.append(student_name)
+        student_list[student_name] = 0
         _id = next(ids, None)
 
     class_1 = []
@@ -79,6 +79,8 @@ def solve():
                 every_stu.append(each[3])
                 every_stu.append(each[4])
                 every_stu.append(each[5])
+                print(each[4])
+
                # print(every_stu)
                 csvwriter.writerow(every_stu)
     os.chdir(root_cwd)
