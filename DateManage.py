@@ -1,13 +1,29 @@
 import csv
 import time
 import os
+import Config
+from MongodbConn import MongoPipeline
 #打开文件，用with打开可以不用去特意关闭file了，python3不支持file()打开文件，只能用open()
 def solve():
     #获取当前路径
+    class_number = Config.CLASS_NUMBER
     root_cwd = os.getcwd()
     todaytime = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     cwd = root_cwd + '/' + str(todaytime)
     os.chdir(cwd)
+
+    student_list = []
+    conn = MongoPipeline()
+    conn.open_connection('qiandao_mac_name')
+    # 用课程来区别，不仅仅是mac地址，因为每次课的mac地址是
+    ids = conn.getIds('info', {'class_num': class_number})
+    _id = next(ids, None)
+    while _id:
+        # print(_id)
+        student_name = _id['name']
+        print(student_name)
+        student_list.append(student_name)
+        _id = next(ids, None)
 
     class_1 = []
     class_2 = []
