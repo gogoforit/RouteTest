@@ -18,5 +18,6 @@ for each in info_list:
     if each['studentid']:
         dic['studentid'] = each['studentid']
     dic['_id'] = mac
+    dic['class_num'] = 21
     conn.process_item(dic, 'info')
     print(dic)
