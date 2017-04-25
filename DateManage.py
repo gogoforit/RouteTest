@@ -99,6 +99,10 @@ def solve():
             with open(student_unsigh_filename, "w", newline="") as datacsv:
                 csvwriter = csv.writer(datacsv, dialect=("excel"))
                 for each in student_unsigh:
-                    csvwriter.writerow(each)
+                    if each == '姓名':
+                        continue
+                    every_stu = []
+                    every_stu.append(each)
+                    csvwriter.writerow(every_stu)
     os.chdir(root_cwd)
 
