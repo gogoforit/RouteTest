@@ -79,7 +79,7 @@ def solve():
                 every_stu.append(each[3])
                 every_stu.append(each[4])
                 every_stu.append(each[5])
-                print(every_stu)
+               # print(every_stu)
                 csvwriter.writerow(every_stu)
     os.chdir(root_cwd)
 
