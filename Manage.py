@@ -75,7 +75,7 @@ while True:
             dic['class_num'] = class_num
         # ids = conn.getIds('info', {'_id': str(class_num) + ':' +each})
         # id = next(ids, None)
-        # dic['_id'] = str(the_day) + '/' + str(class_num) + '/' + dic['_id']
+        dic['_id'] = str(the_day) + '/' + str(class_num) + '/' + dic['_id']
         # if id!=None:
         #     conn.update_item({'_id': each}, {"$set": {"num": id['num']+1}}, 'info')
         #     continue
