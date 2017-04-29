@@ -1,6 +1,6 @@
 import xlrd
 def insert():
-    fname = "1518028手机MAC地址.xlsx"
+    fname = "1518021班学生手机mac地址.xlsx"
     bk = xlrd.open_workbook(fname)
     shxrange = range(bk.nsheets)
     try:

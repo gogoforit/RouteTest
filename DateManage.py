@@ -1,13 +1,32 @@
 import csv
 import time
 import os
+import Config
+from MongodbConn import MongoPipeline
 #打开文件，用with打开可以不用去特意关闭file了，python3不支持file()打开文件，只能用open()
 def solve():
     #获取当前路径
+    class_number = Config.CLASS_NUMBER
     root_cwd = os.getcwd()
     todaytime = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     cwd = root_cwd + '/' + str(todaytime)
     os.chdir(cwd)
+
+    student_list = {}
+    conn = MongoPipeline()
+    conn.open_connection('qiandao_mac_name')
+    # 用课程来区别，不仅仅是mac地址，因为每次课的mac地址是
+    ids = conn.getIds('info', {'class_num': class_number})
+    _id = next(ids, None)
+    student_num = 0
+    while _id:
+        #统计每个班总的人数
+        student_num += 1
+        # print(_id)
+        student_name = _id['name']
+        # print(student_name)
+        student_list[student_name] = 0
+        _id = next(ids, None)
 
     class_1 = []
     class_2 = []
@@ -63,7 +82,27 @@ def solve():
                 every_stu.append(each[3])
                 every_stu.append(each[4])
                 every_stu.append(each[5])
-                print(every_stu)
+                # print(each[4])
+                student_list[each[4]] = 1
+
+               # print(every_stu)
                 csvwriter.writerow(every_stu)
+    #处理出没有来签到的同学的名单
+        student_unsigh = []
+        for each in student_list:
+            if student_list[each] == 0:
+                student_unsigh.append(each)
+
+        if len(student_unsigh) != 0 and len(student_unsigh) != student_num:
+            # print(student_unsigh)
+            student_unsigh_filename =  "class_" + str(i+1) + '_unsign' +'.csv'
+            with open(student_unsigh_filename, "w", newline="") as datacsv:
+                csvwriter = csv.writer(datacsv, dialect=("excel"))
+                for each in student_unsigh:
+                    if each == '姓名':
+                        continue
+                    every_stu = []
+                    every_stu.append(each)
+                    csvwriter.writerow(every_stu)
     os.chdir(root_cwd)
 
