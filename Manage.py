@@ -1,4 +1,4 @@
-#路由器重新开机以后必须要先连一下网才可以进入后台
+
 import requests
 import json
 import re
@@ -10,9 +10,14 @@ import DateManage
 import GetMac
 import GetWlan0Pid
 
+last_time = time.time()
+now_time = None
+sum_time = 0
 
 while True:
-
+    time.sleep(2)
+    now_time = time.time()
+    sub_time = now_time - last_time
 
     macs = None
     macs = GetMac.get()
@@ -68,15 +73,16 @@ while True:
         else :
             class_num = 5
             dic['class_num'] = class_num
-        ids = conn.getIds('info', {'_id': str(class_num) + ':' +each})
-        id = next(ids, None)
-        dic['_id'] = str(the_day) + '/' + str(class_num) + '/' + dic['_id']
-        if id!=None:
-            conn.update_item({'_id': each}, {"$set": {"num": id['num']+1}}, 'info')
-            continue
-        else:
-            dic['num'] = 1
-            conn.process_item(dic, 'info')
+        # ids = conn.getIds('info', {'_id': str(class_num) + ':' +each})
+        # id = next(ids, None)
+        # dic['_id'] = str(the_day) + '/' + str(class_num) + '/' + dic['_id']
+        # if id!=None:
+        #     conn.update_item({'_id': each}, {"$set": {"num": id['num']+1}}, 'info')
+        #     continue
+        # else:
+        #     dic['num'] = 1
+
+        conn.process_item(dic, 'info')
     #print(dic)
     #统计哪些人到了，用mac地址和已经存好的姓名对应起来
     conn = MongoPipeline()
@@ -91,6 +97,7 @@ while True:
         dic_lastinfo['mac'] = _id['mac']
         dic_lastinfo['time'] = _id['time']
         dic_lastinfo['class_num'] = dic['class_num']
+        dic_lastinfo['connect_time'] = 2
         conn2 = MongoPipeline()
         conn2.open_connection('qiandao_mac_name') #conn2储存的mac地址和对应的名字
         searchInfo = conn2.getIds('info',{'mac': mac})
@@ -103,12 +110,20 @@ while True:
             dic_lastinfo['name'] = theInfo['name']
             dic_lastinfo['_id'] = str(the_day) + '/' + str(dic['class_num']) + '/' + theInfo['name']
 
-            try:
-                 dic_lastinfo['studentid'] = theInfo['studentid']
-            except :
-                pass
-            conn3.process_item(dic_lastinfo, 'info')
+            judge_insert_update = conn3.getIds('info',{'_id':dic_lastinfo['_id']})
+            result_insert_update = next(judge_insert_update,None)
+            if result_insert_update == None:
+
+                try:
+                     dic_lastinfo['studentid'] = theInfo['studentid']
+                except :
+                    pass
+                conn3.process_item(dic_lastinfo, 'info')
+            else:
+                conn3.update_item({'_id': dic_lastinfo['_id']}, {"$set": {"connect_time": result_insert_update['connect_time'] + 2}}, 'info')
         _id = next(ids, None)
+
+
 
     OutputCsvTotal.output() #导出csv格式文件
     DateManage.solve()

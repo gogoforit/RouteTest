@@ -24,7 +24,7 @@ def solve():
         student_num += 1
         # print(_id)
         student_name = _id['name']
-        print(student_name)
+        # print(student_name)
         student_list[student_name] = 0
         _id = next(ids, None)
 
@@ -94,7 +94,7 @@ def solve():
                 student_unsigh.append(each)
 
         if len(student_unsigh) != 0 and len(student_unsigh) != student_num:
-            print(student_unsigh)
+            # print(student_unsigh)
             student_unsigh_filename =  "class_" + str(i+1) + '_unsign' +'.csv'
             with open(student_unsigh_filename, "w", newline="") as datacsv:
                 csvwriter = csv.writer(datacsv, dialect=("excel"))

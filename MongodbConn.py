@@ -33,6 +33,7 @@ class MongoPipeline:
                 # print('更新完成')
                 return item
             except Exception as e:
+                print(e)
                 pass
                 #print e    
 
