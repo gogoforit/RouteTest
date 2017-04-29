@@ -10,14 +10,17 @@ import DateManage
 import GetMac
 import GetWlan0Pid
 
-last_time = time.time()
-now_time = None
-sum_time = 0
+# last_time = time.time()
+# now_time = None
+# sum_time = 0
+
+# 每次扫描的时间间隔
+time_interval = 1
 
 while True:
-    time.sleep(2)
-    now_time = time.time()
-    sub_time = now_time - last_time
+    time.sleep(time_interval)
+    # now_time = time.time()
+    # sub_time = now_time - last_time
 
     macs = None
     macs = GetMac.get()
@@ -48,13 +51,13 @@ while True:
         classtime_sec = classtime_hms[2]
         nowtime = datetime.time(int(classtime_hour),int(classtime_min),int(classtime_sec))
         class_time_start_1 = datetime.time(8,0,0)
-        class_time_end_1 = datetime.time(9,0,0)
-        class_time_start_2 = datetime.time(10,0,0)
-        class_time_end_2 = datetime.time(11,0,0)
-        class_time_start_3 = datetime.time(13,30,0)
-        class_time_end_3 = datetime.time(14,30,0)
+        class_time_end_1 = datetime.time(10, 0, 0)
+        class_time_start_2 = datetime.time(10, 5, 0)
+        class_time_end_2 = datetime.time(12, 0, 0)
+        class_time_start_3 = datetime.time(14, 00, 0)
+        class_time_end_3 = datetime.time(15, 30, 0)
         class_time_start_4 = datetime.time(15,35,0)
-        class_time_end_4 = datetime.time(16,30,0)
+        class_time_end_4 = datetime.time(17, 30, 0)
         class_time_test = datetime.time(18,0,0)
         class_num = None
         dic['class_num'] = 66
@@ -75,7 +78,7 @@ while True:
             dic['class_num'] = class_num
         # ids = conn.getIds('info', {'_id': str(class_num) + ':' +each})
         # id = next(ids, None)
-        # dic['_id'] = str(the_day) + '/' + str(class_num) + '/' + dic['_id']
+        dic['_id'] = str(the_day) + '/' + str(class_num) + '/' + dic['_id']
         # if id!=None:
         #     conn.update_item({'_id': each}, {"$set": {"num": id['num']+1}}, 'info')
         #     continue
@@ -97,7 +100,7 @@ while True:
         dic_lastinfo['mac'] = _id['mac']
         dic_lastinfo['time'] = _id['time']
         dic_lastinfo['class_num'] = dic['class_num']
-        dic_lastinfo['connect_time'] = 2
+        dic_lastinfo['connect_time'] = time_interval / 60
         conn2 = MongoPipeline()
         conn2.open_connection('qiandao_mac_name') #conn2储存的mac地址和对应的名字
         searchInfo = conn2.getIds('info',{'mac': mac})
@@ -109,7 +112,7 @@ while True:
         if theInfo!=None:
             dic_lastinfo['name'] = theInfo['name']
             dic_lastinfo['_id'] = str(the_day) + '/' + str(dic['class_num']) + '/' + theInfo['name']
-
+            #计算每节课的连接时间
             judge_insert_update = conn3.getIds('info',{'_id':dic_lastinfo['_id']})
             result_insert_update = next(judge_insert_update,None)
             if result_insert_update == None:
@@ -120,7 +123,9 @@ while True:
                     pass
                 conn3.process_item(dic_lastinfo, 'info')
             else:
-                conn3.update_item({'_id': dic_lastinfo['_id']}, {"$set": {"connect_time": result_insert_update['connect_time'] + 2}}, 'info')
+                conn3.update_item({'_id': dic_lastinfo['_id']},
+                                  {"$set": {"connect_time": result_insert_update['connect_time'] + time_interval / 60}},
+                                  'info')
         _id = next(ids, None)
 
 
