@@ -4,7 +4,6 @@ __pycache__/
 InsertTool/
 *.py[cod]
 *$py.class
-Config.py
 
 
 # C extensions
@@ -104,5 +103,6 @@ ENV/
 #date documentation
 2017-*
 
-
+#config for class_number
+Config.py
 
