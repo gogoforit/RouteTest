@@ -4,6 +4,7 @@ __pycache__/
 InsertTool/
 *.py[cod]
 *$py.class
+Config.py
 
 
 # C extensions
