@@ -104,6 +104,7 @@ while True:
         theInfo = next(searchInfo,None)
         # print(theInfo)
         # print(123)
+        dic_lastinfo['date'] = the_day
         conn3 = MongoPipeline()#conn3对应最后的结果，结果导出到csv文件
         conn3.open_connection('qiandao_last_info')
         if theInfo!=None:
