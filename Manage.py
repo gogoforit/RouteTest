@@ -54,10 +54,10 @@ while True:
         class_time_end_1 = datetime.time(10, 0, 0)
         class_time_start_2 = datetime.time(10, 5, 0)
         class_time_end_2 = datetime.time(12, 0, 0)
-        class_time_start_3 = datetime.time(14, 00, 0)
-        class_time_end_3 = datetime.time(15, 30, 0)
-        class_time_start_4 = datetime.time(15,35,0)
-        class_time_end_4 = datetime.time(17, 30, 0)
+        class_time_start_3 = datetime.time(14,30, 0)
+        class_time_end_3 = datetime.time(16, 0, 0)
+        class_time_start_4 = datetime.time(16,0,0)
+        class_time_end_4 = datetime.time(18, 0, 0)
         class_time_test = datetime.time(18,0,0)
         class_num = None
         dic['class_num'] = 66
