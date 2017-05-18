@@ -30,12 +30,15 @@ while True:
     #存入数据库
     conn = MongoPipeline()
     conn.open_connection('qiandao')
+    #用于储存，当前是否连接
+    dic_sign = {}
     for each in macs: #把所有现在在线MAC地址都存入数据库中
         # print(each)
         dic = {}
         dic['mac'] = each
         dic['_id'] = each
         dic['_type'] ='mac'
+        dic_sign[each] = '1'
         mytime  = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
         # print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
         #处理出当天的日期
@@ -94,7 +97,12 @@ while True:
     ids = conn.getIds('info', {'class_num': class_num,'date':the_day})
     _id = next(ids, None)
     while _id:
-        # print(_id)
+        # 如果没有连接，那么连接时间不会增加
+        if _id['mac'] in dic_sign:
+            pass
+        else:
+            _id = next(ids, None)
+            continue
         dic_lastinfo = {}
         mac = _id['mac']
         dic_lastinfo['mac'] = _id['mac']
