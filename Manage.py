@@ -116,6 +116,7 @@ while True:
             #计算每节课的连接时间
             judge_insert_update = conn3.getIds('info',{'_id':dic_lastinfo['_id']})
             result_insert_update = next(judge_insert_update,None)
+            ans_time = (4.0/3)
             if result_insert_update == None:
 
                 try:
@@ -125,7 +126,7 @@ while True:
                 conn3.process_item(dic_lastinfo, 'info')
             else:
                 conn3.update_item({'_id': dic_lastinfo['_id']},
-                                  {"$set": {"connect_time": result_insert_update['connect_time'] + time_interval / 60}},
+                                  {"$set": {"connect_time": result_insert_update['connect_time'] + (ans_time) / 60}},
                                   'info')
         _id = next(ids, None)
 
