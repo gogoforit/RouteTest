@@ -74,7 +74,7 @@ def solve():
 
             # csv文件插入一行数据，把下面列表中的每一项放入一个单元格（可以用循环插入多行）
 
-            csvwriter.writerow(["time", "mac", "class_num", "name","studentid"])
+            csvwriter.writerow(["time", "mac", "class_num", "name","studentid","connect_time"])
             for each in class_all[i]:
                 every_stu = []
                 every_stu.append(each[1])
@@ -82,6 +82,7 @@ def solve():
                 every_stu.append(each[3])
                 every_stu.append(each[4])
                 every_stu.append(each[5])
+                every_stu.append(each[6])
                 # print(each[4])
                 student_list[each[4]] = 1
 
