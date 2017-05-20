@@ -1,14 +1,11 @@
 
-import requests
-import json
-import re
 from MongodbConn import MongoPipeline
 import time
 import OutputCsvTotal
 import datetime
 import DateManage
 import GetMac
-import GetWlan0Pid
+import Config
 
 # last_time = time.time()
 # now_time = None
@@ -18,6 +15,7 @@ import GetWlan0Pid
 time_interval = 1
 
 while True:
+    class_id = Config.CLASS_NUMBER
     time.sleep(time_interval)
     # now_time = time.time()
     # sub_time = now_time - last_time
@@ -36,6 +34,7 @@ while True:
         # print(each)
         dic = {}
         dic['mac'] = each
+        dic['class_id'] = class_id
         dic['_id'] = each
         dic['_type'] ='mac'
         dic_sign[each] = '1'
@@ -79,14 +78,8 @@ while True:
         else :
             class_num = 5
             dic['class_num'] = class_num
-        # ids = conn.getIds('info', {'_id': str(class_num) + ':' +each})
-        # id = next(ids, None)
+
         dic['_id'] = str(the_day) + '/' + str(class_num) + '/' + dic['_id']
-        # if id!=None:
-        #     conn.update_item({'_id': each}, {"$set": {"num": id['num']+1}}, 'info')
-        #     continue
-        # else:
-        #     dic['num'] = 1
 
         conn.process_item(dic, 'info')
     #print(dic)
@@ -107,6 +100,7 @@ while True:
         mac = _id['mac']
         dic_lastinfo['mac'] = _id['mac']
         dic_lastinfo['time'] = _id['time']
+        dic_lastinfo['class_id'] = class_id
         dic_lastinfo['class_num'] = dic['class_num']
         dic_lastinfo['connect_time'] = time_interval / 60
         conn2 = MongoPipeline()
@@ -142,8 +136,3 @@ while True:
 
     OutputCsvTotal.output() #导出csv格式文件
     DateManage.solve()
-#
-# print(hostinfo)
-# print(nexturl)
-# print(stok)
-# print(html)
