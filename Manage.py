@@ -118,7 +118,7 @@ while True:
             #计算每节课的连接时间
             judge_insert_update = conn3.getIds('info',{'_id':dic_lastinfo['_id']})
             result_insert_update = next(judge_insert_update,None)
-            ans_time = (4.0/3)
+            ans_time = 2.0 
             if result_insert_update == None:
 
                 try:
