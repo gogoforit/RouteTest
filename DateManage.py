@@ -66,7 +66,7 @@ def solve():
             class_other.append(i)
     for i  in range (0,5):
         thefile = "class_" + str(i+1) + '.csv'
-
+        student_list_basic = student_list
         with open(thefile, "w", newline="") as datacsv:
             # dialect为打开csv文件的方式，默认是excel，delimiter="\t"参数指写入的时候的分隔符
 
@@ -84,16 +84,20 @@ def solve():
                 every_stu.append(each[5])
                 every_stu.append(each[6])
                 # print(each[4])
-                student_list[each[4]] = 1
+                student_list_basic[each[4]] = 1
 
                # print(every_stu)
                 csvwriter.writerow(every_stu)
     #处理出没有来签到的同学的名单
         student_unsigh = []
-        for each in student_list:
-            if student_list[each] == 0:
+        for each in student_list_basic:
+            if student_list_basic[each] == 0:
                 student_unsigh.append(each)
-
+        print(student_list_basic)
+        print(student_list_basic['万仕贤'])
+        print(student_unsigh)
+        print(len(student_unsigh))
+        print(student_num)
         if len(student_unsigh) != 0 and len(student_unsigh) != student_num:
             # print(student_unsigh)
             student_unsigh_filename =  "class_" + str(i+1) + '_unsign' +'.csv'
