@@ -93,11 +93,7 @@ def solve():
         for each in student_list_basic:
             if student_list_basic[each] == 0:
                 student_unsigh.append(each)
-        print(student_list_basic)
-        print(student_list_basic['万仕贤'])
-        print(student_unsigh)
-        print(len(student_unsigh))
-        print(student_num)
+
         if len(student_unsigh) != 0 and len(student_unsigh) != student_num:
             # print(student_unsigh)
             student_unsigh_filename =  "class_" + str(i+1) + '_unsign' +'.csv'

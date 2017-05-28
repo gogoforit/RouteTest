@@ -7,12 +7,14 @@ import DateManage
 import GetMac
 import Config
 
-# last_time = time.time()
-# now_time = None
-# sum_time = 0
 
-# 每次扫描的时间间隔
 time_interval = 1
+conn = MongoPipeline()
+conn.open_connection('qiandao')
+conn2 = MongoPipeline()
+conn2.open_connection('qiandao_mac_name')
+conn3 = MongoPipeline()  # conn3对应最后的结果，结果导出到csv文件
+conn3.open_connection('qiandao_last_info')
 
 while True:
     class_id = Config.CLASS_NUMBER
@@ -22,24 +24,26 @@ while True:
 
     macs = None
     macs = GetMac.get()
-    # macs = re.findall('"mac": "(.*?)"',info,re.S)
     if len(macs)==0:
+        all_students = conn2.getIds('info',{'class_num':class_id})
+        for student in all_students:
+            name = student['name']
+            conn2.update_item({'name': name},
+                              {"$set": {"connect_status": 0}}, 'info')
         continue
     #存入数据库
     conn = MongoPipeline()
     conn.open_connection('qiandao')
     #用于储存，当前是否连接
-    dic_sign = {}
+    dic_sign = []
     for each in macs: #把所有现在在线MAC地址都存入数据库中
-        # print(each)
         dic = {}
         dic['mac'] = each
         dic['class_id'] = class_id
         dic['_id'] = each
         dic['_type'] ='mac'
-        dic_sign[each] = '1'
+        dic_sign.append(each)
         mytime  = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-        # print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
         #处理出当天的日期
         the_day = mytime.split(' ')[0]
         dic['time'] = mytime
@@ -82,19 +86,23 @@ while True:
         dic['_id'] = str(the_day) + '/' + str(class_num) + '/' + dic['_id']
 
         conn.process_item(dic, 'info')
-    #print(dic)
     #统计哪些人到了，用mac地址和已经存好的姓名对应起来
-    conn = MongoPipeline()
-    conn.open_connection('qiandao')
     #用课程来区别，不仅仅是mac地址，因为每次课的mac地址是
     ids = conn.getIds('info', {'class_num': class_num,'date':the_day})
-    _id = next(ids, None)
-    while _id:
+
+    for _id in ids:
         # 如果没有连接，那么连接时间不会增加
+        # 连接状态，1表示连接，0表示未连接
         if _id['mac'] in dic_sign:
-            pass
+            conn2.update_item({'mac':_id['mac']},
+                              {"$set":{"connect_status":1}},'info')
+            # conn3.update_item({'_id': dic_lastinfo['_id']},
+            #                   {"$set": {"connect_time": result_insert_update['connect_time'] + (ans_time) / 60}},
+            #                   'info')
         else:
-            _id = next(ids, None)
+
+            conn2.update_item({'mac': _id['mac']},
+                              {"$set": {"connect_status": 0}}, 'info')
             continue
         dic_lastinfo = {}
         mac = _id['mac']
@@ -103,15 +111,11 @@ while True:
         dic_lastinfo['class_id'] = class_id
         dic_lastinfo['class_num'] = dic['class_num']
         dic_lastinfo['connect_time'] = time_interval / 60
-        conn2 = MongoPipeline()
-        conn2.open_connection('qiandao_mac_name') #conn2储存的mac地址和对应的名字
+
         searchInfo = conn2.getIds('info',{'mac': mac})
         theInfo = next(searchInfo,None)
-        # print(theInfo)
-        # print(123)
         dic_lastinfo['date'] = the_day
-        conn3 = MongoPipeline()#conn3对应最后的结果，结果导出到csv文件
-        conn3.open_connection('qiandao_last_info')
+
         if theInfo!=None:
             dic_lastinfo['name'] = theInfo['name']
             dic_lastinfo['_id'] = str(the_day) + '/' + str(dic['class_num']) + '/' + theInfo['name']
@@ -130,7 +134,7 @@ while True:
                 conn3.update_item({'_id': dic_lastinfo['_id']},
                                   {"$set": {"connect_time": result_insert_update['connect_time'] + (ans_time) / 60}},
                                   'info')
-        _id = next(ids, None)
+
 
 
 
