@@ -19,8 +19,6 @@ conn3.open_connection('qiandao_last_info')
 while True:
     class_id = config.CLASS_NUMBER
     time.sleep(time_interval)
-    # now_time = time.time()
-    # sub_time = now_time - last_time
 
     macs = None
     macs = get_mac.get()
@@ -31,9 +29,9 @@ while True:
             conn2.update_item({'name': name},
                               {"$set": {"connect_status": 0}}, 'info')
         continue
-    #用于储存，当前是否连接
+    # 用于储存，当前是否连接
     dic_sign = []
-    for each in macs: #把所有现在在线MAC地址都存入数据库中
+    for each in macs: # 把所有现在在线MAC地址都存入数据库中
         dic = {}
         dic['mac'] = each
         dic['class_id'] = class_id
@@ -41,11 +39,11 @@ while True:
         dic['_type'] ='mac'
         dic_sign.append(each)
         mytime  = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-        #处理出当天的日期
+        # 处理出当天的日期
         the_day = mytime.split(' ')[0]
         dic['time'] = mytime
         dic['date'] = the_day
-        #对时间做处理，判断
+        # 对时间做处理，判断
         classtime = mytime.split(' ')
         classtime_hms = classtime[1]
         classtime_hms = classtime_hms.split(':')
@@ -83,8 +81,8 @@ while True:
 
 
         conn.process_item(dic, 'info')
-    #统计哪些人到了，用mac地址和已经存好的姓名对应起来
-    #用课程来区别，不仅仅是mac地址，因为每次课的mac地址是
+    # 统计哪些人到了，用mac地址和已经存好的姓名对应起来
+    # 用课程来区别，不仅仅是mac地址，因为每次课的mac地址是相同的
     ids = conn.getIds('info', {'class_num': class_num,'date':the_day})
 
     for _id in ids:
@@ -93,9 +91,6 @@ while True:
         if _id['mac'] in dic_sign:
             conn2.update_item({'mac':_id['mac']},
                               {"$set":{"connect_status":1}},'info')
-            # conn3.update_item({'_id': dic_lastinfo['_id']},
-            #                   {"$set": {"connect_time": result_insert_update['connect_time'] + (ans_time) / 60}},
-            #                   'info')
         else:
 
             conn2.update_item({'mac': _id['mac']},
@@ -121,7 +116,6 @@ while True:
             result_insert_update = next(judge_insert_update,None)
             ans_time = 2.0 
             if result_insert_update == None:
-
                 try:
                      dic_lastinfo['studentid'] = theInfo['studentid']
                 except :
@@ -133,5 +127,5 @@ while True:
                                   'info')
 
 
-    output_total.output() #导出csv格式文件
+    output_total.output() # 导出csv格式文件
     data_manage.solve()

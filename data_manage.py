@@ -3,9 +3,9 @@ import time
 import os
 import config
 from mongodb_conn import MongoPipeline
-#打开文件，用with打开可以不用去特意关闭file了，python3不支持file()打开文件，只能用open()
+
 def solve():
-    #获取当前路径
+    # 获取当前路径
     class_number = config.CLASS_NUMBER
     root_cwd = os.getcwd()
     todaytime = time.strftime('%Y-%m-%d', time.localtime(time.time()))
@@ -19,12 +19,11 @@ def solve():
     ids = conn.getIds('info', {'class_num': class_number})
     _id = next(ids, None)
     student_num = 0
+
     while _id:
-        #统计每个班总的人数
+        # 统计每个班总的人数
         student_num += 1
-        # print(_id)
         student_name = _id['name']
-        # print(student_name)
         student_list[student_name] = 0
         _id = next(ids, None)
 
@@ -49,11 +48,7 @@ def solve():
             if str(mytime) == str(todaytime):
                 read.append(i)
 
-    # with open("qiandao_last_info.csv","r",encoding="utf-8") as csvfile:
-    #读取csv文件，返回的是迭代类型
-        # read = csv.reader(csvfile)
     for i in read:
-        # print (i)
         if i[3] == '1':
             class_1.append(i)
         elif i[3] == '2':
@@ -68,7 +63,6 @@ def solve():
         thefile = "class_" + str(i+1) + '.csv'
         student_list_basic = student_list
         with open(thefile, "w", newline="") as datacsv:
-            # dialect为打开csv文件的方式，默认是excel，delimiter="\t"参数指写入的时候的分隔符
 
             csvwriter = csv.writer(datacsv, dialect=("excel"))
 
@@ -83,19 +77,16 @@ def solve():
                 every_stu.append(each[4])
                 every_stu.append(each[5])
                 every_stu.append(each[6])
-                # print(each[4])
                 student_list_basic[each[4]] = 1
-
-               # print(every_stu)
                 csvwriter.writerow(every_stu)
-    #处理出没有来签到的同学的名单
+
+    # 处理出没有来签到的同学的名单
         student_unsigh = []
         for each in student_list_basic:
             if student_list_basic[each] == 0:
                 student_unsigh.append(each)
 
         if len(student_unsigh) != 0 and len(student_unsigh) != student_num:
-            # print(student_unsigh)
             student_unsigh_filename =  "class_" + str(i+1) + '_unsign' +'.csv'
             with open(student_unsigh_filename, "w", newline="") as datacsv:
                 csvwriter = csv.writer(datacsv, dialect=("excel"))

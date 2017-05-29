@@ -1,10 +1,8 @@
 import os
 import time
-# commands = 'python'
-# os.system(commands)
-#命令行导出csv文件
+
+# 命令行导出csv文件
 def output():
-    # os.chdir( r"/home/kk/python_code/theinfo/RouteTest")
     root_cwd = os.getcwd()
     mytime = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     cwd = root_cwd + '/' + str(mytime)
