@@ -1,12 +1,10 @@
-
-from mongodb_conn import MongoPipeline
-import time
-import output_total
 import datetime
-import data_manage
-import get_mac
-import config
+import time
 
+import config
+from data_handle import data_manage, output_total
+from models.mongodb_conn import MongoPipeline
+from wifi_route import get_mac
 
 time_interval = 1
 conn = MongoPipeline()

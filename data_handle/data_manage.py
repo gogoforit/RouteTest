@@ -1,8 +1,10 @@
 import csv
-import time
 import os
+import time
+
 import config
-from mongodb_conn import MongoPipeline
+from models.mongodb_conn import MongoPipeline
+
 
 def solve():
     # 获取当前路径

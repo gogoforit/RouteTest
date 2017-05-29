@@ -1,5 +1,7 @@
 import os
-import get_pid
+
+from wifi_route import get_pid
+
 
 def get():
     # 获取ap热点的pid
