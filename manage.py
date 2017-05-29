@@ -1,11 +1,11 @@
 
-from MongodbConn import MongoPipeline
+from mongodb_conn import MongoPipeline
 import time
-import OutputCsvTotal
+import output_total
 import datetime
-import DateManage
-import GetMac
-import Config
+import data_manage
+import get_mac
+import config
 
 
 time_interval = 1
@@ -17,13 +17,13 @@ conn3 = MongoPipeline()  # conn3对应最后的结果，结果导出到csv文件
 conn3.open_connection('qiandao_last_info')
 
 while True:
-    class_id = Config.CLASS_NUMBER
+    class_id = config.CLASS_NUMBER
     time.sleep(time_interval)
     # now_time = time.time()
     # sub_time = now_time - last_time
 
     macs = None
-    macs = GetMac.get()
+    macs = get_mac.get()
     if len(macs)==0:
         all_students = conn2.getIds('info',{'class_num':class_id})
         for student in all_students:
@@ -31,9 +31,6 @@ while True:
             conn2.update_item({'name': name},
                               {"$set": {"connect_status": 0}}, 'info')
         continue
-    #存入数据库
-    conn = MongoPipeline()
-    conn.open_connection('qiandao')
     #用于储存，当前是否连接
     dic_sign = []
     for each in macs: #把所有现在在线MAC地址都存入数据库中
@@ -138,5 +135,5 @@ while True:
 
 
 
-    OutputCsvTotal.output() #导出csv格式文件
-    DateManage.solve()
+    output_total.output() #导出csv格式文件
+    data_manage.solve()

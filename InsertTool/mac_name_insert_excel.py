@@ -1,4 +1,4 @@
-from MongodbConn import MongoPipeline
+from mongodb_conn import MongoPipeline
 from InsertTool import mac_insert as excel_insert
 conn = MongoPipeline()
 conn.open_connection('qiandao_mac_name')
