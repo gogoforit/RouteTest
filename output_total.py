@@ -19,5 +19,5 @@ def output():
         # 如果目录存在则不创建，并提示目录已存在
         pass
     os.chdir(cwd)
-    os.system('mongoexport -d qiandao_last_info -c info --csv -f _id,time,mac,class_num,name,studentid -o qiandao_last_info.csv')
+    os.system('mongoexport -d qiandao_last_info -c info --csv -f _id,time,mac,class_num,name,studentid,connect_time -o qiandao_last_info.csv')
     os.chdir(root_cwd)

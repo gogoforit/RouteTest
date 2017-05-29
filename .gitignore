@@ -1,15 +1,14 @@
 led / optimized / DLL files
 __pycache__/
 .idea/
-<<<<<<< HEAD
 
-=======
+
+
 InsertTool/
 *.py[cod]
 *$py.class
 
 
->>>>>>> RouteTest_ap
 # C extensions
 *.so
 
@@ -103,12 +102,10 @@ ENV/
 
 # mkdocs documentation
 /site
-<<<<<<< HEAD
-=======
+
 
 #date documentation
 2017-*
 
 
 
->>>>>>> RouteTest_ap

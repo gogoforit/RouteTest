@@ -1,9 +1,9 @@
 import os
 import re
-import GetWlan0Pid
+import get_pid
 def get():
     #获取ap热点的pid
-    pid = GetWlan0Pid.get_pid()
+    pid = get_pid.get_pid()
     #构造查询这个ap热点的命令
     mycommand = "create_ap --list-clients " + pid
     info = os.popen(mycommand)

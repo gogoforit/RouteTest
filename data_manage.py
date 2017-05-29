@@ -1,12 +1,12 @@
 import csv
 import time
 import os
-import Config
-from MongodbConn import MongoPipeline
+import config
+from mongodb_conn import MongoPipeline
 #打开文件，用with打开可以不用去特意关闭file了，python3不支持file()打开文件，只能用open()
 def solve():
     #获取当前路径
-    class_number = Config.CLASS_NUMBER
+    class_number = config.CLASS_NUMBER
     root_cwd = os.getcwd()
     todaytime = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     cwd = root_cwd + '/' + str(todaytime)
@@ -66,7 +66,7 @@ def solve():
             class_other.append(i)
     for i  in range (0,5):
         thefile = "class_" + str(i+1) + '.csv'
-
+        student_list_basic = student_list
         with open(thefile, "w", newline="") as datacsv:
             # dialect为打开csv文件的方式，默认是excel，delimiter="\t"参数指写入的时候的分隔符
 
@@ -74,7 +74,7 @@ def solve():
 
             # csv文件插入一行数据，把下面列表中的每一项放入一个单元格（可以用循环插入多行）
 
-            csvwriter.writerow(["time", "mac", "class_num", "name","studentid"])
+            csvwriter.writerow(["time", "mac", "class_num", "name","studentid","connect_time"])
             for each in class_all[i]:
                 every_stu = []
                 every_stu.append(each[1])
@@ -82,15 +82,16 @@ def solve():
                 every_stu.append(each[3])
                 every_stu.append(each[4])
                 every_stu.append(each[5])
+                every_stu.append(each[6])
                 # print(each[4])
-                student_list[each[4]] = 1
+                student_list_basic[each[4]] = 1
 
                # print(every_stu)
                 csvwriter.writerow(every_stu)
     #处理出没有来签到的同学的名单
         student_unsigh = []
-        for each in student_list:
-            if student_list[each] == 0:
+        for each in student_list_basic:
+            if student_list_basic[each] == 0:
                 student_unsigh.append(each)
 
         if len(student_unsigh) != 0 and len(student_unsigh) != student_num:

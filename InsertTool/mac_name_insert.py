@@ -1,4 +1,4 @@
-from MongodbConn import MongoPipeline
+from mongodb_conn import MongoPipeline
 conn = MongoPipeline()
 conn.open_connection('qiandao_mac_name')
 #插入信息

@@ -1,7 +1,9 @@
-from MongodbConn import MongoPipeline
+from mongodb_conn import MongoPipeline
 from InsertTool import mac_insert as excel_insert
 conn = MongoPipeline()
 conn.open_connection('qiandao_mac_name')
+
+class_number = 28
 #插入信息
 #格式：
 #MAC 姓名
@@ -18,6 +20,6 @@ for each in info_list:
     if each['studentid']:
         dic['studentid'] = each['studentid']
     dic['_id'] = mac
-    dic['class_num'] = 21
+    dic['class_num'] = class_number
     conn.process_item(dic, 'info')
     print(dic)
