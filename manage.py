@@ -7,6 +7,8 @@ from models.mongodb_conn import MongoPipeline
 from wifi_route import get_mac
 
 time_interval = 1
+class_id = config.CLASS_NUMBER
+
 conn = MongoPipeline()
 conn.open_connection('qiandao')
 conn2 = MongoPipeline()
@@ -17,8 +19,25 @@ conn4 = MongoPipeline()
 conn4.open_connection('web_info',host='192.168.1.103',username='pipi',password='123456',
                       ip='192.168.1.103')
 
+
+
 while True:
-    class_id = config.CLASS_NUMBER
+
+    # 开始前，先把所有班级学生的信息发送到远程
+    stu_pri_info = conn2.getIds('info',{'class_num':class_id})
+    for each_stu in stu_pri_info:
+        name = each_stu['name']
+        remote_dic = {}
+        remote_dic['name'] = name
+        remote_dic['connect_status'] = 0
+        remote_dic['mac'] = each_stu['mac']
+        remote_dic['class_num'] = each_stu['class_num']
+        remote_info = conn4.getIds_one('info',{'name':name})
+        if remote_info == None:
+            conn4.process_item(remote_dic,'info')
+
+
+
     time.sleep(time_interval)
 
     macs = None
@@ -29,6 +48,12 @@ while True:
             name = student['name']
             conn2.update_item({'name': name},
                               {"$set": {"connect_status": 0}}, 'info')
+
+        remote_stus = conn4.getIds('info',{'class_num':class_id})
+        for each_stu in remote_stus:
+            mac = each_stu['mac']
+            conn4.update_item({'mac':mac},
+                              {'$set':{'connect_status':0}},'info')
         continue
     # 用于储存，当前是否连接
     dic_sign = []
