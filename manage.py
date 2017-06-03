@@ -13,6 +13,9 @@ conn2 = MongoPipeline()
 conn2.open_connection('qiandao_mac_name')
 conn3 = MongoPipeline()  # conn3对应最后的结果，结果导出到csv文件
 conn3.open_connection('qiandao_last_info')
+conn4 = MongoPipeline()
+conn4.open_connection('web_info',host='192.168.1.103',username='pipi',password='123456',
+                      ip='192.168.1.103')
 
 while True:
     class_id = config.CLASS_NUMBER
@@ -86,13 +89,41 @@ while True:
     for _id in ids:
         # 如果没有连接，那么连接时间不会增加
         # 连接状态，1表示连接，0表示未连接
+        print(_id,13212312313131)
         if _id['mac'] in dic_sign:
             conn2.update_item({'mac':_id['mac']},
                               {"$set":{"connect_status":1}},'info')
+            stu_info = conn2.getIds_one('info',{'mac':_id['mac']})
+            stu_name = stu_info['name']
+            remote_info = conn4.getIds_one('info',{'mac':_id['mac']})
+            if remote_info == None:
+                remote_dic = {}
+                remote_dic['name'] = stu_name
+                remote_dic['connect_status'] = 1
+                remote_dic['mac'] = _id['mac']
+                print(remote_dic)
+                conn4.process_item(remote_dic,'info')
+            else:
+                conn4.update_item({'mac':_id['mac']},
+                                 {"$set":{"connect_status":1}},'info')
+            print(stu_info)
         else:
 
             conn2.update_item({'mac': _id['mac']},
                               {"$set": {"connect_status": 0}}, 'info')
+            stu_info = conn2.getIds_one('info', {'mac': _id['mac']})
+            stu_name = stu_info['name']
+            remote_info = conn4.getIds_one('info', {'mac': _id['mac']})
+            if remote_info == None:
+                remote_dic = {}
+                remote_dic['name'] = stu_name
+                remote_dic['connect_status'] = 0
+                remote_dic['mac'] = _id['mac']
+                print(remote_dic)
+                conn4.process_item(remote_dic, 'info')
+            else:
+                conn4.update_item({'mac': _id['mac']},
+                                  {"$set": {"connect_status": 0}}, 'info')
             continue
         dic_lastinfo = {}
         mac = _id['mac']
