@@ -8,7 +8,7 @@ class MongoPipeline:
 
     def open_connection(self, mongo_db,host = None,username = None,
                         password = None,ip = None):
-        if host != None:
+        if username != None:
             command =  'mongodb://' + username + ':' + password + '@' + ip + ':27017'
             self.client = pymongo.MongoClient(command)
             self.db = self.client[mongo_db]

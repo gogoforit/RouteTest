@@ -16,8 +16,9 @@ conn2.open_connection('qiandao_mac_name')
 conn3 = MongoPipeline()  # conn3对应最后的结果，结果导出到csv文件
 conn3.open_connection('qiandao_last_info')
 conn4 = MongoPipeline()
-conn4.open_connection('web_info',host='192.168.1.103',username='pipi',password='123456',
-                      ip='192.168.1.103')
+conn4.open_connection('web_info',username='pipi',password='123456',
+                      ip='192.168.1.128')
+
 
 
 
