@@ -32,7 +32,7 @@ while True:
         remote_dic['name'] = name
         remote_dic['connect_status'] = 0
         remote_dic['mac'] = each_stu['mac']
-        remote_dic['class_num'] = each_stu['class_num']
+        remote_dic['class_num'] = class_id
         remote_info = conn4.getIds_one('info',{'name':name})
         if remote_info == None:
             conn4.process_item(remote_dic,'info')
