@@ -138,6 +138,8 @@ while True:
             conn2.update_item({'mac': _id['mac']},
                               {"$set": {"connect_status": 0}}, 'info')
             stu_info = conn2.getIds_one('info', {'mac': _id['mac']})
+            if stu_info == None:
+                continue
             stu_name = stu_info['name']
             remote_info = conn4.getIds_one('info', {'mac': _id['mac']})
             if remote_info == None:
