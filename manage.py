@@ -127,6 +127,7 @@ while True:
                 remote_dic['name'] = stu_name
                 remote_dic['connect_status'] = 1
                 remote_dic['mac'] = _id['mac']
+                remote_dic['class_num'] = class_id
                 print(remote_dic)
                 conn4.process_item(remote_dic,'info')
             else:
@@ -147,6 +148,7 @@ while True:
                 remote_dic['name'] = stu_name
                 remote_dic['connect_status'] = 0
                 remote_dic['mac'] = _id['mac']
+                remote_dic['class_num'] = class_id
                 print(remote_dic)
                 conn4.process_item(remote_dic, 'info')
             else:
